@@ -28,6 +28,7 @@ post '/unpack' do
 				filename = f.name.split( File::Separator ).pop
 				if contents and filename and filename =~ /(png|jp?g|gif)$/i
 					puts "Writing out: #{filename}"
+					f.extract(filename)					
 				end
 			end
 		end
