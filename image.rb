@@ -1,7 +1,8 @@
 require 'sinatra'
 require 'gollum-lib'
 require 'tempfile'
-require 'zip/zip'
+require 'zip'
+require 'rugged'
 
 def index ( message=nil )
 	response = File.read(File.join('.', 'index.html'))
@@ -20,7 +21,7 @@ post '/unpack' do
 	@index = Rugged::Index.new
 
 	zip = params[:zip][:tempfile]
-	Zip::ZipFile.open( zip ) { |zipfile| 
+	Zip::File.open( zip ) { |zipfile| 
 		zipfile.each do |f|
 			contents = zipfile.read( f.name )
 			filename = f.name.split( File::Separator ).pop
