@@ -23,10 +23,12 @@ post '/unpack' do
 	zip = params[:zip][:tempfile]
 	Zip::File.open( zip ) { |zipfile| 
 		zipfile.each do |f|
-			contents = zipfile.read( f.name )
-			filename = f.name.split( File::Separator ).pop
-			if contents and filename and filename =~ /(png|jp?g|gif)$/i
-				puts "Writing out: #{filename}"
+			if f.file?
+				contents = f.get_input_stream.read
+				filename = f.name.split( File::Separator ).pop
+				if contents and filename and filename =~ /(png|jp?g|gif)$/i
+					puts "Writing out: #{filename}"
+				end
 			end
 		end
 	}
